@@ -147,11 +147,15 @@ export default function Dashboard({ setIsAuthenticated }) {
   const copyToClipboard = async (text, type) => {
     try {
       await navigator.clipboard.writeText(text);
-      // You could add a toast notification here
       console.log(`${type} copiato negli appunti`);
     } catch (err) {
       console.error('Error copying to clipboard:', err);
     }
+  };
+
+  const handleImportExportSuccess = (message) => {
+    console.log(message);
+    fetchPasswords();
   };
 
   if (loading) {
