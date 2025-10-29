@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
@@ -52,9 +52,12 @@ export default function AddPasswordDialog({ onClose, onSave }) {
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px]" data-testid="add-password-dialog">
+      <DialogContent className="sm:max-w-[500px]" data-testid="add-password-dialog" aria-describedby="dialog-description">
         <DialogHeader>
           <DialogTitle data-testid="dialog-title">Aggiungi Password</DialogTitle>
+          <DialogDescription id="dialog-description">
+            Compila i campi per salvare una nuova password nel tuo vault
+          </DialogDescription>
         </DialogHeader>
 
         {error && (
