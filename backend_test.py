@@ -307,6 +307,10 @@ class SafePassAPITester:
         self.test_invalid_login()
         self.test_unauthorized_access()
         
+        # Recovery Tests
+        print("\n🔑 RECOVERY TESTS")
+        self.test_password_recovery()
+        
         # Password Management Tests  
         print("\n🔐 PASSWORD MANAGEMENT TESTS")
         self.test_get_empty_passwords()
@@ -314,6 +318,12 @@ class SafePassAPITester:
         self.test_get_passwords()
         self.test_update_password()
         self.test_delete_password()
+        
+        # Import/Export Tests
+        print("\n📁 IMPORT/EXPORT TESTS")
+        self.test_export_csv()
+        self.test_export_xml()
+        self.test_export_xlsx()
         
         # Print Results
         print("\n" + "=" * 50)
