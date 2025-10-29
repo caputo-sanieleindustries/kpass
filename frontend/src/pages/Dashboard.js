@@ -351,6 +351,14 @@ export default function Dashboard({ setIsAuthenticated }) {
           onConfirm={handleDeletePassword}
         />
       )}
+
+      {importExportDialog && (
+        <ImportExportDialog
+          mode={importExportDialog}
+          onClose={() => setImportExportDialog(null)}
+          onSuccess={handleImportExportSuccess}
+        />
+      )}
     </div>
   );
 }
