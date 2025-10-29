@@ -46,15 +46,26 @@ export default function RegisterPage({ setIsAuthenticated }) {
     }
   };
 
-  const handleRecoveryKeySaved = (response) => {
-    // Store token and user info
-    localStorage.setItem('token', response.token);
-    localStorage.setItem('userId', response.user_id);
-    localStorage.setItem('username', response.master_username);
-    localStorage.setItem('masterPassword', password);
+  const handleRecoveryKeySaved = async () => {
+    // Now get the token by making the actual login
+    try {
+      const response = await axios.post(`${API}/auth/login`, {
+        master_username: username,
+        master_password: password
+      });
 
-    setIsAuthenticated(true);
-    navigate('/');
+      // Store token and user info
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('userId', response.data.user_id);
+      localStorage.setItem('username', response.data.master_username);
+      localStorage.setItem('masterPassword', password);
+
+      setIsAuthenticated(true);
+      navigate('/');
+    } catch (err) {
+      setError('Errore durante il login automatico');
+      setLoading(false);
+    }
   };
 
   return (
