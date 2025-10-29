@@ -89,12 +89,12 @@ export default function ImportExportDialog({ mode, onClose, onSuccess }) {
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px]" data-testid="import-export-dialog">
+      <DialogContent className="sm:max-w-[500px]" data-testid="import-export-dialog" aria-describedby="dialog-description">
         <DialogHeader>
           <DialogTitle data-testid="dialog-title">
             {mode === 'import' ? '📥 Importa Password' : '📤 Esporta Password'}
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription id="dialog-description">
             {mode === 'import' 
               ? 'Carica un file CSV, XML, XLSX o XLSM con le tue password. Supporta formati da 1Password, LastPass e altri.'
               : 'Esporta le tue password in formato criptato. Avrai bisogno della master password per decriptarle.'}
