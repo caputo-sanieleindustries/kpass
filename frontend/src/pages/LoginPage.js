@@ -97,6 +97,8 @@ export default function LoginPage({ setIsAuthenticated }) {
 
         <div className="auth-link">
           Non hai un account? <Link to="/register" data-testid="register-link">Registrati</Link>
+          {' · '}
+          <Link to="/recover" data-testid="recover-link">Password dimenticata?</Link>
         </div>
       </div>
     </div>
