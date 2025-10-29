@@ -1,0 +1,4 @@
+title,email,username,password,url,notes
+Gmail Account,test@gmail.com,testuser,mypassword123,https://gmail.com,Personal email account
+Facebook,test@facebook.com,testuser,fbpassword456,https://facebook.com,Social media account
+Bank Account,test@bank.com,testuser,bankpass789,https://bank.com,Online banking
