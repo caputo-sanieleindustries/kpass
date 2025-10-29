@@ -175,6 +175,20 @@ export default function Dashboard({ setIsAuthenticated }) {
         </div>
         <div className="dashboard-actions">
           <div className="user-info" data-testid="user-info">👤 {username}</div>
+          <button 
+            className="btn-secondary" 
+            onClick={() => setImportExportDialog('import')}
+            data-testid="import-button"
+          >
+            📥 Importa
+          </button>
+          <button 
+            className="btn-secondary" 
+            onClick={() => setImportExportDialog('export')}
+            data-testid="export-button"
+          >
+            📤 Esporta
+          </button>
           <button className="btn-secondary" onClick={handleLogout} data-testid="logout-button">
             Esci
           </button>
