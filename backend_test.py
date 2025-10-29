@@ -87,13 +87,13 @@ class SafePassAPITester:
             return False, {}
 
     def test_user_registration(self):
-        """Test user registration"""
+        """Test user registration with recovery key"""
         timestamp = datetime.now().strftime('%H%M%S')
         test_username = f"testuser_{timestamp}"
         test_password = "TestPassword123!"
         
         success, response = self.run_test(
-            "User Registration",
+            "User Registration with Recovery Key",
             "POST",
             "auth/register",
             200,
@@ -103,12 +103,14 @@ class SafePassAPITester:
             }
         )
         
-        if success and 'token' in response:
+        if success and 'token' in response and 'recovery_key' in response:
             self.token = response['token']
             self.user_id = response['user_id']
             self.username = test_username
             self.master_password = test_password
+            self.recovery_key = response['recovery_key']
             print(f"   Registered user: {test_username}")
+            print(f"   Recovery key generated: {self.recovery_key}")
             return True
         return False
 
