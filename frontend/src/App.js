@@ -3,6 +3,7 @@ import './App.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import RecoverPage from './pages/RecoverPage';
 import Dashboard from './pages/Dashboard';
 
 function App() {
@@ -33,6 +34,10 @@ function App() {
           <Route 
             path="/register" 
             element={!isAuthenticated ? <RegisterPage setIsAuthenticated={setIsAuthenticated} /> : <Navigate to="/" />} 
+          />
+          <Route 
+            path="/recover" 
+            element={!isAuthenticated ? <RecoverPage /> : <Navigate to="/" />} 
           />
           <Route 
             path="/" 
