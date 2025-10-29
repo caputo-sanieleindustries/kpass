@@ -294,6 +294,121 @@ class SafePassAPITester:
         self.token = original_token
         return success
 
+    def test_password_recovery(self):
+        """Test password recovery using recovery key"""
+        if not hasattr(self, 'recovery_key') or not self.username:
+            self.log_test("Password Recovery", False, "No recovery key or username available")
+            return False
+            
+        new_password = "NewTestPassword456!"
+        
+        success, response = self.run_test(
+            "Password Recovery with Recovery Key",
+            "POST",
+            "auth/recover",
+            200,
+            data={
+                "master_username": self.username,
+                "recovery_key": self.recovery_key,
+                "new_master_password": new_password
+            }
+        )
+        
+        if success:
+            # Update stored password for future tests
+            self.master_password = new_password
+            print("   Password recovery successful")
+            return True
+        return False
+
+    def test_export_csv(self):
+        """Test CSV export functionality"""
+        if not self.token:
+            self.log_test("Export CSV", False, "No token available")
+            return False
+            
+        # First create a password to export
+        password_data = {
+            "title": "Export Test Account",
+            "email": "export@test.com", 
+            "username": "exportuser",
+            "encrypted_password": "encrypted_export_password",
+            "url": "https://export-test.com",
+            "notes": "Test account for export testing"
+        }
+        
+        create_success, create_response = self.run_test(
+            "Create Password for Export",
+            "POST",
+            "passwords",
+            200,
+            data=password_data
+        )
+        
+        if not create_success:
+            return False
+            
+        # Test CSV export
+        try:
+            url = f"{self.api_url}/passwords/export?format=csv"
+            headers = {'Authorization': f'Bearer {self.token}'}
+            response = requests.get(url, headers=headers, timeout=10)
+            
+            if response.status_code == 200:
+                self.log_test("Export CSV", True)
+                print("   CSV export successful")
+                return True
+            else:
+                self.log_test("Export CSV", False, f"Expected 200, got {response.status_code}")
+                return False
+        except Exception as e:
+            self.log_test("Export CSV", False, f"Request failed: {str(e)}")
+            return False
+
+    def test_export_xml(self):
+        """Test XML export functionality"""
+        if not self.token:
+            self.log_test("Export XML", False, "No token available")
+            return False
+            
+        try:
+            url = f"{self.api_url}/passwords/export?format=xml"
+            headers = {'Authorization': f'Bearer {self.token}'}
+            response = requests.get(url, headers=headers, timeout=10)
+            
+            if response.status_code == 200:
+                self.log_test("Export XML", True)
+                print("   XML export successful")
+                return True
+            else:
+                self.log_test("Export XML", False, f"Expected 200, got {response.status_code}")
+                return False
+        except Exception as e:
+            self.log_test("Export XML", False, f"Request failed: {str(e)}")
+            return False
+
+    def test_export_xlsx(self):
+        """Test XLSX export functionality"""
+        if not self.token:
+            self.log_test("Export XLSX", False, "No token available")
+            return False
+            
+        try:
+            url = f"{self.api_url}/passwords/export?format=xlsx"
+            headers = {'Authorization': f'Bearer {self.token}'}
+            response = requests.get(url, headers=headers, timeout=10)
+            
+            if response.status_code == 200:
+                self.log_test("Export XLSX", True)
+                print("   XLSX export successful")
+                return True
+            else:
+                self.log_test("Export XLSX", False, f"Expected 200, got {response.status_code}")
+                return False
+        except Exception as e:
+            self.log_test("Export XLSX", False, f"Request failed: {str(e)}")
+            return False
+
     def run_all_tests(self):
         """Run all backend tests"""
         print("🚀 Starting SafePass Backend API Tests")
