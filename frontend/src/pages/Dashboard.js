@@ -17,6 +17,7 @@ export default function Dashboard({ setIsAuthenticated }) {
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingPassword, setEditingPassword] = useState(null);
   const [deletingPassword, setDeletingPassword] = useState(null);
+  const [importExportDialog, setImportExportDialog] = useState(null);
   const [revealedPasswords, setRevealedPasswords] = useState({});
   const navigate = useNavigate();
   const username = localStorage.getItem('username');
