@@ -4,8 +4,7 @@ import { Button } from './ui/button';
 import { Label } from './ui/label';
 import axios from 'axios';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+const API = '/api';
 
 export default function ImportExportDialog({ mode, onClose, onSuccess }) {
   const [selectedFile, setSelectedFile] = useState(null);
