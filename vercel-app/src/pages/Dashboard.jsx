@@ -6,10 +6,8 @@ import EditPasswordDialog from '../components/EditPasswordDialog';
 import DeleteConfirmDialog from '../components/DeleteConfirmDialog';
 import ImportExportDialog from '../components/ImportExportDialog';
 import { encryptPassword, decryptPassword } from '../utils/crypto';
-import { toast } from 'sonner';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+const API = '/api';
 
 export default function Dashboard({ setIsAuthenticated }) {
   const [passwords, setPasswords] = useState([]);
