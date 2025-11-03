@@ -90,29 +90,93 @@ async function handler(req, res) {
 
 async function processImportRecords(records, userId, db) {
   let importedCount = 0;
+  
+  // Mapping completo per tutti i formati popolari
+  const fieldMappings = {
+    // Title/Name mappings
+    title: ['title', 'name', 'site', 'website', 'service', 'account', 'item'],
+    // Email mappings
+    email: ['email', 'e-mail', 'mail', 'email address', 'user email'],
+    // Username mappings
+    username: ['username', 'user', 'login', 'user name', 'account name', 'loginname'],
+    // Password mappings (sia chiare che criptate)
+    password: ['password', 'pass', 'encrypted_password', 'encryptedpassword', 'pwd'],
+    // URL mappings
+    url: ['url', 'website', 'site', 'web', 'link', 'address', 'host', 'domain'],
+    // Notes mappings
+    notes: ['notes', 'note', 'extra', 'comment', 'comments', 'description', 'memo', 'grouping', 'folder', 'category']
+  };
+
+  // Normalize all records
   const normalizedRecords = records.map(record => {
     const normalized = {};
     for (const [key, value] of Object.entries(record)) {
-      normalized[key.toLowerCase().trim()] = value;
+      const normalizedKey = key.toLowerCase().trim().replace(/[_\s-]/g, '');
+      normalized[normalizedKey] = value;
     }
-    return normalized;
+    return { original: record, normalized };
   });
 
-  for (const record of normalizedRecords) {
-    if (!record.title && !record.name && !record.url) continue;
+  for (const { original, normalized } of normalizedRecords) {
+    // Smart field extraction usando i mapping
+    const extractField = (mappingArray) => {
+      for (const possibleKey of mappingArray) {
+        const searchKey = possibleKey.toLowerCase().replace(/[_\s-]/g, '');
+        if (normalized[searchKey] && normalized[searchKey] !== '') {
+          return normalized[searchKey];
+        }
+      }
+      return null;
+    };
 
-    const passwordEntry = new PasswordEntry({
-      user_id: userId,
-      title: record.title || record.name || 'Untitled',
-      email: record.email || null,
-      username: record.username || null,
-      encrypted_password: record.encrypted_password || record.password || '',
-      url: record.url || record.website || null,
-      notes: record.notes || record.extra || null
-    });
+    const title = extractField(fieldMappings.title);
+    const email = extractField(fieldMappings.email);
+    const username = extractField(fieldMappings.username);
+    const password = extractField(fieldMappings.password);
+    const url = extractField(fieldMappings.url);
+    const notes = extractField(fieldMappings.notes);
 
-    await db.collection('password_entries').insertOne(passwordEntry.toJSON());
-    importedCount++;
+    // Skip se non ci sono dati essenziali
+    if (!title && !url && !password) {
+      console.log('Skipping empty record:', original);
+      continue;
+    }
+
+    // Se la password sembra essere in chiaro (non criptata), avvisa
+    let finalPassword = password || '';
+    if (finalPassword && !finalPassword.includes(':') && finalPassword.length < 50) {
+      // Probabilmente password in chiaro - aggiungi warning nelle note
+      const warningNote = '⚠️ ATTENZIONE: Password importata in chiaro. Ri-cripta cambiando il valore.';
+      const existingNotes = notes ? notes : '';
+      const combinedNotes = existingNotes ? `${existingNotes}\n\n${warningNote}` : warningNote;
+      
+      const passwordEntry = new PasswordEntry({
+        user_id: userId,
+        title: title || url || 'Imported Entry',
+        email: email || null,
+        username: username || null,
+        encrypted_password: finalPassword,
+        url: url || null,
+        notes: combinedNotes
+      });
+
+      await db.collection('password_entries').insertOne(passwordEntry.toJSON());
+      importedCount++;
+    } else {
+      // Password già criptata o vuota
+      const passwordEntry = new PasswordEntry({
+        user_id: userId,
+        title: title || url || 'Imported Entry',
+        email: email || null,
+        username: username || null,
+        encrypted_password: finalPassword,
+        url: url || null,
+        notes: notes || null
+      });
+
+      await db.collection('password_entries').insertOne(passwordEntry.toJSON());
+      importedCount++;
+    }
   }
 
   return importedCount;
