@@ -217,15 +217,18 @@ frontend:
 
   - task: "Dashboard integration with export dialogs"
     implemented: true
-    working: "NA"
+    working: false
     file: "/app/frontend/src/pages/Dashboard.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Dashboard uses ExportInfoDialog and ExportDialog. Decrypt button links to /decrypt.html"
+      - working: false
+        agent: "testing"
+        comment: "CRITICAL ISSUE: Cannot test dashboard integration due to authentication failure. Users cannot login to reach dashboard. Code review shows proper integration with data-testid attributes for export-button, decrypt-button, and dialog components, but functionality cannot be verified due to login blocking access."
 
   - task: "decrypt.html page for password decryption"
     implemented: true
