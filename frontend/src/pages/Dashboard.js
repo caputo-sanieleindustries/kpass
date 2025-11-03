@@ -154,23 +154,17 @@ export default function Dashboard({ setIsAuthenticated }) {
     }
   };
 
-  const handleImportExportSuccess = (message) => {
-    console.log(message);
-    fetchPasswords();
-    setMobileMenuOpen(false);
+  const handleExportClick = () => {
+    setShowExportInfoDialog(true);
   };
 
-  const handleMobileMenuAction = (action) => {
-    setMobileMenuOpen(false);
-    setTimeout(() => {
-      if (action === 'import') {
-        setImportExportDialog('import');
-      } else if (action === 'export') {
-        setImportExportDialog('export');
-      } else if (action === 'logout') {
-        handleLogout();
-      }
-    }, 300);
+  const handleExportInfoConfirm = () => {
+    setShowExportInfoDialog(false);
+    setShowExportDialog(true);
+  };
+
+  const handleExportSuccess = () => {
+    setShowExportDialog(false);
   };
 
   if (loading) {
