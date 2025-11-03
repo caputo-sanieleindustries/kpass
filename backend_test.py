@@ -39,7 +39,11 @@ class SafePassAPITester:
     def run_test(self, name, method, endpoint, expected_status, data=None, headers=None):
         """Run a single API test"""
         url = f"{self.api_url}/{endpoint}"
-        test_headers = {'Content-Type': 'application/json'}
+        test_headers = {}
+        
+        # Only add Content-Type for requests that have data
+        if data is not None:
+            test_headers['Content-Type'] = 'application/json'
         
         if self.token:
             test_headers['Authorization'] = f'Bearer {self.token}'
