@@ -187,15 +187,18 @@ frontend:
 
   - task: "ExportInfoDialog component"
     implemented: true
-    working: "NA"
+    working: false
     file: "/app/frontend/src/components/ExportInfoDialog.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Component exists with 4-step guide explaining export and decryption process. Includes button to open decrypt.html"
+      - working: false
+        agent: "testing"
+        comment: "CRITICAL ISSUE: Unable to test ExportInfoDialog due to authentication problems. Registration and login flow is failing - users cannot reach dashboard to test export functionality. Backend logs show 401 errors on login attempts. This blocks testing of all dashboard-related features including export dialogs."
 
   - task: "ExportDialog component"
     implemented: true
