@@ -238,7 +238,6 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Export passwords API endpoint"
     - "ExportInfoDialog component"
     - "ExportDialog component"
     - "Dashboard integration with export dialogs"
