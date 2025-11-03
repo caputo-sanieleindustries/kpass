@@ -114,39 +114,48 @@ user_problem_statement: |
 backend:
   - task: "Remove import route from importExportRoutes.js"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/routes/importExportRoutes.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Removed POST /import route, kept only GET /export route"
+      - working: true
+        agent: "testing"
+        comment: "TESTED: Import route correctly removed. POST /api/passwords/import returns 404 as expected. Import functionality completely removed from backend."
 
   - task: "Remove importPasswords function from importExportController.js"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/controllers/importExportController.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Removed importPasswords function and processImportRecords helper. Kept only exportPasswords function"
+      - working: true
+        agent: "testing"
+        comment: "TESTED: Import functions successfully removed. Only export functionality remains in controller. No import-related code found."
 
   - task: "Export passwords API endpoint"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/controllers/importExportController.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Export functionality remains intact. Supports CSV, XML, XLSX, XLSM formats"
+      - working: true
+        agent: "testing"
+        comment: "TESTED: All export formats working perfectly. CSV, XML, XLSX, XLSM exports successful. Authentication required (401 without token). Encrypted passwords properly included in exports."
 
 frontend:
   - task: "Remove mobile menu CSS from App.css"
