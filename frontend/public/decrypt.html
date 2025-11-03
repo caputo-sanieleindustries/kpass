@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafePass - Decritta Password</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+            padding: 1rem;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        .subtitle { color: #666; margin-bottom: 2rem; }
+        .section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #fafafa;
+            border-radius: 12px;
+        }
+        h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        label { display: block; font-weight: 500; margin-bottom: 0.5rem; }
+        input, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1.5px solid #e5e5e5;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+        textarea {
+            min-height: 100px;
+            font-family: 'Courier New', monospace;
+        }
+        button {
+            padding: 0.875rem 1.5rem;
+            background: #0a0a0a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover { background: #262626; }
+        .result {
+            padding: 1rem;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            margin-top: 1rem;
+            word-break: break-all;
+        }
+        .error {
+            padding: 1rem;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            color: #dc2626;
+            margin-top: 1rem;
+        }
+        .info-box {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        code {
+            background: #f5f5f5;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔓 Decritta Password Esportate</h1>
+        <p class="subtitle">Decritta le password dal file esportato usando la tua master password</p>
+        
+        <div class="info-box">
+            <strong>⚠️ IMPORTANTE:</strong> Questa pagina funziona completamente offline. I tuoi dati NON vengono inviati a nessun server.
+        </div>
+        
+        <div class="section">
+            <h2>Decritta Password Singola</h2>
+            
+            <label for="masterPassword">Master Password:</label>
+            <input type="password" id="masterPassword" placeholder="La tua master password">
+            
+            <label for="username">Username SafePass:</label>
+            <input type="text" id="username" placeholder="Il tuo username">
+            
+            <label for="encryptedPassword">Password Criptata:</label>
+            <textarea id="encryptedPassword" placeholder="Incolla la password dal CSV (formato: iv:encrypted)"></textarea>
+            
+            <button onclick="decrypt()">🔓 Decripta Password</button>
+            
+            <div id="result"></div>
+        </div>
+        
+        <div class="section">
+            <h2>Decritta File CSV Completo</h2>
+            
+            <label for="fileInput">File CSV Esportato:</label>
+            <input type="file" id="fileInput" accept=".csv">
+            
+            <button onclick="decryptFile()">📄 Decritta CSV</button>
+            
+            <div id="fileResult"></div>
+        </div>
+    </div>
+    
+    <script>
+        function str2ab(str) {
+            return new TextEncoder().encode(str);
+        }
+        function ab2str(buffer) {
+            return new TextDecoder().decode(buffer);
+        }
+        function hex2ab(hex) {
+            const bytes = new Uint8Array(hex.length / 2);
+            for (let i = 0; i < hex.length; i += 2) {
+                bytes[i / 2] = parseInt(hex.substr(i, 2), 16);
+            }
+            return bytes;
+        }
+        
+        async function deriveKey(masterPassword, username) {
+            const salt = `safepass-${username || 'default'}`;
+            const keyMaterial = await window.crypto.subtle.importKey(
+                'raw', str2ab(masterPassword), { name: 'PBKDF2' }, false, ['deriveKey']
+            );
+            return window.crypto.subtle.deriveKey(
+                { name: 'PBKDF2', salt: str2ab(salt), iterations: 100000, hash: 'SHA-256' },
+                keyMaterial, { name: 'AES-GCM', length: 256 }, false, ['decrypt']
+            );
+        }
+        
+        async function decryptValue(encryptedData, masterPassword, username) {
+            const [ivHex, encryptedHex] = encryptedData.split(':');
+            const iv = hex2ab(ivHex);
+            const encrypted = hex2ab(encryptedHex);
+            const key = await deriveKey(masterPassword, username);
+            const decrypted = await window.crypto.subtle.decrypt(
+                { name: 'AES-GCM', iv }, key, encrypted
+            );
+            return ab2str(decrypted);
+        }
+        
+        async function decrypt() {
+            const masterPassword = document.getElementById('masterPassword').value;
+            const username = document.getElementById('username').value;
+            const encryptedPassword = document.getElementById('encryptedPassword').value.trim();
+            const resultDiv = document.getElementById('result');
+            
+            if (!masterPassword || !username || !encryptedPassword) {
+                resultDiv.innerHTML = '<div class="error">⚠️ Compila tutti i campi!</div>';
+                return;
+            }
+            
+            try {
+                const decrypted = await decryptValue(encryptedPassword, masterPassword, username);
+                resultDiv.innerHTML = `<div class="result"><strong>✅ Password:</strong><br><code style="font-size:1.1rem;user-select:all;">${decrypted}</code></div>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ Errore: verifica master password e username</div>`;
+            }
+        }
+        
+        async function decryptFile() {
+            const fileInput = document.getElementById('fileInput');
+            const masterPassword = document.getElementById('masterPassword').value;
+            const username = document.getElementById('username').value;
+            const resultDiv = document.getElementById('fileResult');
+            
+            if (!fileInput.files[0] || !masterPassword || !username) {
+                resultDiv.innerHTML = '<div class="error">⚠️ Seleziona file e inserisci credenziali!</div>';
+                return;
+            }
+            
+            try {
+                const text = await fileInput.files[0].text();
+                const lines = text.split('\\n');
+                const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+                const pwdIndex = headers.findIndex(h => h.toLowerCase().includes('password'));
+                const titleIndex = headers.findIndex(h => h.toLowerCase().includes('title'));
+                
+                let html = '<div class="result"><strong>✅ Password Decriptate:</strong><table style="width:100%;margin-top:1rem;border-collapse:collapse;">';
+                html += '<tr><th style="text-align:left;padding:0.5rem;border-bottom:2px solid #ccc;">Titolo</th><th style="text-align:left;padding:0.5rem;border-bottom:2px solid #ccc;">Password</th></tr>';
+                
+                for (let i = 1; i < lines.length; i++) {
+                    if (!lines[i].trim()) continue;
+                    const values = lines[i].split(',').map(v => v.trim().replace(/"/g, ''));
+                    const encryptedPwd = values[pwdIndex];
+                    const title = titleIndex >= 0 ? values[titleIndex] : `Entry ${i}`;
+                    
+                    if (encryptedPwd && encryptedPwd.includes(':')) {
+                        try {
+                            const decrypted = await decryptValue(encryptedPwd, masterPassword, username);
+                            html += `<tr><td style="padding:0.5rem;border-bottom:1px solid #eee;">${title}</td><td style="padding:0.5rem;border-bottom:1px solid #eee;font-family:monospace;">${decrypted}</td></tr>`;
+                        } catch (e) {
+                            html += `<tr><td style="padding:0.5rem;">${title}</td><td style="padding:0.5rem;color:red;">Errore</td></tr>`;
+                        }
+                    }
+                }
+                html += '</table></div>';
+                resultDiv.innerHTML = html;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>
