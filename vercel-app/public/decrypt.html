@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafePass - Decripta Password</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+            padding: 2rem;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: #0a0a0a;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+        
+        .section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #fafafa;
+            border-radius: 12px;
+        }
+        
+        .section h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: #0a0a0a;
+        }
+        
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #0a0a0a;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1.5px solid #e5e5e5;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #0a0a0a;
+        }
+        
+        textarea {
+            min-height: 120px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        button {
+            padding: 0.875rem 1.5rem;
+            background: #0a0a0a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.95rem;
+            width: 100%;
+        }
+        
+        button:hover {
+            background: #262626;
+        }
+        
+        button:disabled {
+            background: #d4d4d4;
+            cursor: not-allowed;
+        }
+        
+        .result {
+            padding: 1rem;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            margin-top: 1rem;
+            word-break: break-all;
+        }
+        
+        .error {
+            padding: 1rem;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            color: #dc2626;
+            margin-top: 1rem;
+        }
+        
+        .info-box {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .info-box strong {
+            color: #92400e;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .steps {
+            counter-reset: step;
+        }
+        
+        .step {
+            counter-increment: step;
+            padding-left: 2rem;
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        
+        .step::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #0a0a0a;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔓 Decripta Password Esportate</h1>
+        <p class="subtitle">Decripta le password dal file esportato usando la tua master password</p>
+        
+        <div class="info-box">
+            <strong>⚠️ IMPORTANTE:</strong> Questa pagina funziona completamente offline. 
+            I tuoi dati NON vengono mai inviati a nessun server. La decrittazione avviene 
+            solo nel tuo browser.
+        </div>
+        
+        <div class="section">
+            <h2>Come Funziona</h2>
+            <div class="steps">
+                <div class="step">
+                    <strong>Esporta</strong> le password dall'app SafePass
+                </div>
+                <div class="step">
+                    <strong>Apri</strong> il file CSV/Excel/XML esportato
+                </div>
+                <div class="step">
+                    <strong>Copia</strong> la password criptata (colonna <code>encrypted_password</code>)
+                </div>
+                <div class="step">
+                    <strong>Incolla</strong> qui sotto insieme alla tua master password
+                </div>
+                <div class="step">
+                    <strong>Decripta</strong> e vedi la password in chiaro!
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Decritta Password</h2>
+            
+            <label for="masterPassword">Master Password:</label>
+            <input 
+                type="password" 
+                id="masterPassword" 
+                placeholder="La tua master password SafePass"
+                autocomplete="off"
+            >
+            
+            <label for="username">Username SafePass:</label>
+            <input 
+                type="text" 
+                id="username" 
+                placeholder="Il tuo username su SafePass"
+                autocomplete="off"
+            >
+            
+            <label for="encryptedPassword">Password Criptata:</label>
+            <textarea 
+                id="encryptedPassword" 
+                placeholder="Incolla qui la password criptata dal file esportato (formato: iv:encrypted)"
+            ></textarea>
+            
+            <button onclick="decryptPassword()">🔓 Decripta Password</button>
+            
+            <div id="result"></div>
+        </div>
+        
+        <div class="section">
+            <h2>Decritta File Completo</h2>
+            <p style="margin-bottom: 1rem; color: #666;">
+                Carica un file CSV esportato per decrittare tutte le password in una volta.
+            </p>
+            
+            <label for="fileInput">File CSV Esportato:</label>
+            <input type="file" id="fileInput" accept=".csv">
+            
+            <button onclick="decryptFile()">📄 Decripta File CSV</button>
+            
+            <div id="fileResult"></div>
+        </div>
+    </div>
+    
+    <script>
+        // Web Crypto API utilities (stesso codice dell'app)
+        function str2ab(str) {
+            const encoder = new TextEncoder();
+            return encoder.encode(str);
+        }
+        
+        function ab2str(buffer) {
+            const decoder = new TextDecoder();
+            return decoder.decode(buffer);
+        }
+        
+        function hex2ab(hex) {
+            const bytes = new Uint8Array(hex.length / 2);
+            for (let i = 0; i < hex.length; i += 2) {
+                bytes[i / 2] = parseInt(hex.substr(i, 2), 16);
+            }
+            return bytes;
+        }
+        
+        async function deriveKey(masterPassword, username) {
+            const encoder = new TextEncoder();
+            const salt = `safepass-${username || 'default'}`;
+            
+            const keyMaterial = await window.crypto.subtle.importKey(
+                'raw',
+                encoder.encode(masterPassword),
+                { name: 'PBKDF2' },
+                false,
+                ['deriveKey']
+            );
+            
+            return window.crypto.subtle.deriveKey(
+                {
+                    name: 'PBKDF2',
+                    salt: encoder.encode(salt),
+                    iterations: 100000,
+                    hash: 'SHA-256'
+                },
+                keyMaterial,
+                { name: 'AES-GCM', length: 256 },
+                false,
+                ['decrypt']
+            );
+        }
+        
+        async function decryptPasswordValue(encryptedData, masterPassword, username) {
+            try {
+                const [ivHex, encryptedHex] = encryptedData.split(':');
+                const iv = hex2ab(ivHex);
+                const encrypted = hex2ab(encryptedHex);
+                
+                const key = await deriveKey(masterPassword, username);
+                
+                const decrypted = await window.crypto.subtle.decrypt(
+                    { name: 'AES-GCM', iv },
+                    key,
+                    encrypted
+                );
+                
+                return ab2str(decrypted);
+            } catch (error) {
+                throw new Error('Decrittazione fallita. Verifica master password e username.');
+            }
+        }
+        
+        async function decryptPassword() {
+            const masterPassword = document.getElementById('masterPassword').value;
+            const username = document.getElementById('username').value;
+            const encryptedPassword = document.getElementById('encryptedPassword').value.trim();
+            const resultDiv = document.getElementById('result');
+            
+            if (!masterPassword || !username || !encryptedPassword) {
+                resultDiv.innerHTML = '<div class="error">⚠️ Compila tutti i campi!</div>';
+                return;
+            }
+            
+            try {
+                const decrypted = await decryptPasswordValue(encryptedPassword, masterPassword, username);
+                resultDiv.innerHTML = `
+                    <div class="result">
+                        <strong>✅ Password Decriptata:</strong><br>
+                        <code style="font-size: 1.1rem; user-select: all;">${decrypted}</code>
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ ${error.message}</div>`;
+            }
+        }
+        
+        async function decryptFile() {
+            const fileInput = document.getElementById('fileInput');
+            const masterPassword = document.getElementById('masterPassword').value;
+            const username = document.getElementById('username').value;
+            const resultDiv = document.getElementById('fileResult');
+            
+            if (!fileInput.files[0]) {
+                resultDiv.innerHTML = '<div class="error">⚠️ Seleziona un file CSV!</div>';
+                return;
+            }
+            
+            if (!masterPassword || !username) {
+                resultDiv.innerHTML = '<div class="error">⚠️ Inserisci master password e username!</div>';
+                return;
+            }
+            
+            try {
+                const file = fileInput.files[0];
+                const text = await file.text();
+                const lines = text.split('\\n');
+                
+                // Parse CSV header
+                const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+                const passwordIndex = headers.findIndex(h => 
+                    h.toLowerCase().includes('password') || h.toLowerCase().includes('encrypted')
+                );
+                const titleIndex = headers.findIndex(h => h.toLowerCase().includes('title'));
+                
+                if (passwordIndex === -1) {
+                    throw new Error('Colonna password non trovata nel CSV');
+                }
+                
+                let html = '<div class="result"><strong>✅ Password Decriptate:</strong><br><br>';
+                html += '<table style="width: 100%; border-collapse: collapse;">';
+                html += '<tr><th style="text-align: left; padding: 0.5rem; border-bottom: 2px solid #ccc;">Titolo</th>';
+                html += '<th style="text-align: left; padding: 0.5rem; border-bottom: 2px solid #ccc;">Password</th></tr>';
+                
+                for (let i = 1; i < lines.length; i++) {
+                    if (!lines[i].trim()) continue;
+                    
+                    const values = lines[i].split(',').map(v => v.trim().replace(/"/g, ''));
+                    const encryptedPwd = values[passwordIndex];
+                    const title = titleIndex >= 0 ? values[titleIndex] : `Entry ${i}`;
+                    
+                    if (encryptedPwd && encryptedPwd.includes(':')) {
+                        try {
+                            const decrypted = await decryptPasswordValue(encryptedPwd, masterPassword, username);
+                            html += `<tr>
+                                <td style="padding: 0.5rem; border-bottom: 1px solid #eee;">${title}</td>
+                                <td style="padding: 0.5rem; border-bottom: 1px solid #eee; font-family: monospace;">${decrypted}</td>
+                            </tr>`;
+                        } catch (e) {
+                            html += `<tr>
+                                <td style="padding: 0.5rem; border-bottom: 1px solid #eee;">${title}</td>
+                                <td style="padding: 0.5rem; border-bottom: 1px solid #eee; color: red;">Errore decrittazione</td>
+                            </tr>`;
+                        }
+                    }
+                }
+                
+                html += '</table></div>';
+                resultDiv.innerHTML = html;
+                
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ ${error.message}</div>`;
+            }
+        }
+        
+        // Allow Enter key to decrypt
+        document.getElementById('encryptedPassword').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                decryptPassword();
+            }
+        });
+    </script>
+</body>
+</html>
