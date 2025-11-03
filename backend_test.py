@@ -409,6 +409,71 @@ class SafePassAPITester:
             self.log_test("Export XLSX", False, f"Request failed: {str(e)}")
             return False
 
+    def test_export_xlsm(self):
+        """Test XLSM export functionality"""
+        if not self.token:
+            self.log_test("Export XLSM", False, "No token available")
+            return False
+            
+        try:
+            url = f"{self.api_url}/passwords/export?format=xlsm"
+            headers = {'Authorization': f'Bearer {self.token}'}
+            response = requests.get(url, headers=headers, timeout=10)
+            
+            if response.status_code == 200:
+                self.log_test("Export XLSM", True)
+                print("   XLSM export successful")
+                return True
+            else:
+                self.log_test("Export XLSM", False, f"Expected 200, got {response.status_code}")
+                return False
+        except Exception as e:
+            self.log_test("Export XLSM", False, f"Request failed: {str(e)}")
+            return False
+
+    def test_import_route_removed(self):
+        """Test that import route has been removed (should return 404)"""
+        if not self.token:
+            self.log_test("Import Route Removed", False, "No token available")
+            return False
+            
+        try:
+            url = f"{self.api_url}/passwords/import"
+            headers = {'Authorization': f'Bearer {self.token}', 'Content-Type': 'application/json'}
+            
+            # Test POST request to import endpoint
+            response = requests.post(url, json={"test": "data"}, headers=headers, timeout=10)
+            
+            # Should return 404 since import route is removed
+            if response.status_code == 404:
+                self.log_test("Import Route Removed", True)
+                print("   Import route correctly removed (404)")
+                return True
+            else:
+                self.log_test("Import Route Removed", False, f"Expected 404, got {response.status_code}")
+                return False
+        except Exception as e:
+            self.log_test("Import Route Removed", False, f"Request failed: {str(e)}")
+            return False
+
+    def test_export_without_auth(self):
+        """Test export endpoint without authentication (should return 401)"""
+        try:
+            url = f"{self.api_url}/passwords/export?format=csv"
+            # No Authorization header
+            response = requests.get(url, timeout=10)
+            
+            if response.status_code == 401:
+                self.log_test("Export Without Auth (should fail)", True)
+                print("   Export correctly requires authentication (401)")
+                return True
+            else:
+                self.log_test("Export Without Auth (should fail)", False, f"Expected 401, got {response.status_code}")
+                return False
+        except Exception as e:
+            self.log_test("Export Without Auth (should fail)", False, f"Request failed: {str(e)}")
+            return False
+
     def run_all_tests(self):
         """Run all backend tests"""
         print("🚀 Starting SafePass Backend API Tests")
