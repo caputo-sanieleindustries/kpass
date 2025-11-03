@@ -520,8 +520,6 @@ body {
   }
 
   .dashboard {
-    display: flex;
-    flex-direction: column;
     min-height: 100vh;
   }
 
@@ -530,6 +528,7 @@ body {
     position: sticky;
     top: 0;
     z-index: 100;
+    background: #ffffff;
   }
 
   .dashboard-title {
@@ -544,9 +543,6 @@ body {
 
   .dashboard-content {
     padding: 2rem 1rem;
-    flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
   }
 
   .content-header {
