@@ -175,5 +175,5 @@ Twitter,twitteruser,twitterpass789,https://twitter.com,Microblogging
 
 Testa seguendo questa guida. Se qualcosa non funziona, segnala lo specifico punto che non va.
 
-**URL App:** https://safepass-6.preview.emergentagent.com/
-**URL Tool Decrypt:** https://safepass-6.preview.emergentagent.com/decrypt.html
+**URL App:** https://secure-vault-56.preview.emergentagent.com/
+**URL Tool Decrypt:** https://secure-vault-56.preview.emergentagent.com/decrypt.html

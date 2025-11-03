@@ -11,7 +11,7 @@ from datetime import datetime
 import uuid
 
 class SafePassAPITester:
-    def __init__(self, base_url="https://safepass-6.preview.emergentagent.com"):
+    def __init__(self, base_url="https://secure-vault-56.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.token = None
