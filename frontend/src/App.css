@@ -576,4 +576,29 @@ body {
   .btn-primary {
     width: 100%;
   }
+
+  /* Dialog scroll fixes for mobile */
+  [role="dialog"],
+  [role="alertdialog"] {
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+    margin: 1rem;
+    width: calc(100% - 2rem) !important;
+  }
+
+  /* Ensure dialog content can scroll */
+  [data-radix-dialog-content],
+  [data-radix-alert-dialog-content] {
+    max-height: 90vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Make sure dialog body scrolls */
+  .space-y-4,
+  [style*="padding: 1rem 0"] {
+    overflow-y: auto;
+    flex: 1;
+  }
 }
