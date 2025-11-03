@@ -362,11 +362,17 @@ export default function Dashboard({ setIsAuthenticated }) {
         />
       )}
 
-      {importExportDialog && (
-        <ImportExportDialog
-          mode={importExportDialog}
-          onClose={() => setImportExportDialog(null)}
-          onSuccess={handleImportExportSuccess}
+      {showExportInfoDialog && (
+        <ExportInfoDialog
+          onClose={() => setShowExportInfoDialog(false)}
+          onConfirm={handleExportInfoConfirm}
+        />
+      )}
+
+      {showExportDialog && (
+        <ExportDialog
+          onClose={() => setShowExportDialog(false)}
+          onSuccess={handleExportSuccess}
         />
       )}
     </div>
