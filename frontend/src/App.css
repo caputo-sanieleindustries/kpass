@@ -503,10 +503,6 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
-  body {
-    overflow-x: hidden;
-  }
-
   .auth-box {
     padding: 2rem 1.5rem;
   }
