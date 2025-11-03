@@ -183,71 +183,24 @@ export default function Dashboard({ setIsAuthenticated }) {
           <h1 className="dashboard-title">SafePass</h1>
         </div>
         
-        {/* Desktop Actions */}
         <div className="dashboard-actions">
           <div className="user-info" data-testid="user-info">👤 {username}</div>
           <button 
             className="btn-secondary" 
-            onClick={() => setImportExportDialog('import')}
-            data-testid="import-button"
+            onClick={() => window.open('/decrypt.html', '_blank')}
+            data-testid="decrypt-button"
           >
-            📥 Importa
+            🔓 Decripta Password
           </button>
           <button 
             className="btn-secondary" 
-            onClick={() => setImportExportDialog('export')}
+            onClick={handleExportClick}
             data-testid="export-button"
           >
             📤 Esporta
           </button>
           <button className="btn-secondary" onClick={handleLogout} data-testid="logout-button">
             Esci
-          </button>
-        </div>
-        
-        {/* Mobile Menu Button */}
-        <button 
-          className={`mobile-menu-button ${mobileMenuOpen ? 'active' : ''}`}
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          data-testid="mobile-menu-button"
-          aria-label="Menu"
-        >
-          <div className="hamburger"></div>
-        </button>
-      </div>
-
-      {/* Mobile Menu Overlay */}
-      <div 
-        className={`mobile-menu-overlay ${mobileMenuOpen ? 'active' : ''}`}
-        onClick={() => setMobileMenuOpen(false)}
-      ></div>
-
-      {/* Mobile Menu */}
-      <div className={`mobile-menu ${mobileMenuOpen ? 'active' : ''}`}>
-        <div className="mobile-menu-header">
-          <div className="user-info">👤 {username}</div>
-        </div>
-        <div className="mobile-menu-items">
-          <button 
-            className="mobile-menu-item"
-            onClick={() => handleMobileMenuAction('import')}
-            data-testid="mobile-import-button"
-          >
-            📥 Importa Password
-          </button>
-          <button 
-            className="mobile-menu-item"
-            onClick={() => handleMobileMenuAction('export')}
-            data-testid="mobile-export-button"
-          >
-            📤 Esporta Password
-          </button>
-          <button 
-            className="mobile-menu-item danger"
-            onClick={() => handleMobileMenuAction('logout')}
-            data-testid="mobile-logout-button"
-          >
-            🚪 Esci
           </button>
         </div>
       </div>
