@@ -501,9 +501,12 @@ class SafePassAPITester:
         
         # Import/Export Tests
         print("\n📁 IMPORT/EXPORT TESTS")
+        self.test_import_route_removed()
+        self.test_export_without_auth()
         self.test_export_csv()
         self.test_export_xml()
         self.test_export_xlsx()
+        self.test_export_xlsm()
         
         # Print Results
         print("\n" + "=" * 50)
