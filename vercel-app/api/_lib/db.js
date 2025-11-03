@@ -8,7 +8,7 @@ export async function connectToDatabase() {
     return { client: cachedClient, db: cachedDb };
   }
 
-  const uri = process.env.MONGODB_URI;
+  const uri = process.env.MONGODB_URI || process.env.MONGODB_URI_URL;
   
   if (!uri) {
     throw new Error('MONGODB_URI environment variable is required');
@@ -17,7 +17,7 @@ export async function connectToDatabase() {
   const client = new MongoClient(uri);
   await client.connect();
   
-  const db = client.db('safepass');
+  const db = client.db('kpass-00');
   
   cachedClient = client;
   cachedDb = db;
