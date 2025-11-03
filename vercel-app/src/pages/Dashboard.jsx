@@ -155,6 +155,18 @@ export default function Dashboard({ setIsAuthenticated }) {
   const handleImportExportSuccess = (message) => {
     console.log(message);
     fetchPasswords();
+    setMobileMenuOpen(false);
+  };
+
+  const handleMobileMenuAction = (action) => {
+    setMobileMenuOpen(false);
+    if (action === 'import') {
+      setImportExportDialog('import');
+    } else if (action === 'export') {
+      setImportExportDialog('export');
+    } else if (action === 'logout') {
+      handleLogout();
+    }
   };
 
   if (loading) {
