@@ -202,15 +202,18 @@ frontend:
 
   - task: "ExportDialog component"
     implemented: true
-    working: "NA"
+    working: false
     file: "/app/frontend/src/components/ExportDialog.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Separate export-only dialog with format selection (CSV, XML, XLSX, XLSM)"
+      - working: false
+        agent: "testing"
+        comment: "CRITICAL ISSUE: Unable to test ExportDialog due to authentication problems. Cannot reach dashboard to access export functionality. Component code looks correct with proper format options (CSV, XML, XLSX, XLSM) and data-testid attributes, but testing blocked by login issues."
 
   - task: "Dashboard integration with export dialogs"
     implemented: true
