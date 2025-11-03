@@ -501,6 +501,13 @@ body {
   margin-bottom: 1.5rem;
 }
 
+/* Dialog/Modal scrolling support */
+[role="dialog"],
+[role="alertdialog"] {
+  max-height: 95vh;
+  overflow-y: auto;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .auth-box {
