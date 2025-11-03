@@ -174,6 +174,12 @@ export default function ImportExportDialog({ mode, onClose, onSuccess }) {
 
             <div className="warning-box">
               <strong>⚠️ Nota:</strong> Le password esportate sono criptate. Per decriptarle avrai bisogno della tua master password.
+              <br /><br />
+              <strong>🔓 Tool di Decrittazione:</strong>
+              <br />
+              <a href="/decrypt.html" target="_blank" style={{ color: '#0a0a0a', textDecoration: 'underline' }}>
+                Apri Tool di Decrittazione →
+              </a>
             </div>
 
             <div className="flex justify-end gap-2 pt-4">
