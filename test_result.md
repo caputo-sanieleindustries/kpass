@@ -101,3 +101,165 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: |
+  SafePass Password Manager - Remove import functionality, keep export only with decryption guidance.
+  User requested:
+  1. Remove import functionality completely
+  2. Keep only export mode
+  3. Add popup before export explaining process and how to decrypt
+  4. Link to decrypt.html page
+  5. Remove mobile hamburger menu
+
+backend:
+  - task: "Remove import route from importExportRoutes.js"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/routes/importExportRoutes.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Removed POST /import route, kept only GET /export route"
+
+  - task: "Remove importPasswords function from importExportController.js"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/controllers/importExportController.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Removed importPasswords function and processImportRecords helper. Kept only exportPasswords function"
+
+  - task: "Export passwords API endpoint"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/controllers/importExportController.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Export functionality remains intact. Supports CSV, XML, XLSX, XLSM formats"
+
+frontend:
+  - task: "Remove mobile menu CSS from App.css"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.css"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Removed mobile-menu-button, mobile-menu-overlay, mobile-menu CSS rules. Made dashboard-actions responsive with flex-wrap"
+
+  - task: "Remove old ImportExportDialog component"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/ImportExportDialog.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Deleted old ImportExportDialog.js file as it's no longer needed"
+
+  - task: "ExportInfoDialog component"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/ExportInfoDialog.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Component exists with 4-step guide explaining export and decryption process. Includes button to open decrypt.html"
+
+  - task: "ExportDialog component"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/ExportDialog.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Separate export-only dialog with format selection (CSV, XML, XLSX, XLSM)"
+
+  - task: "Dashboard integration with export dialogs"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/Dashboard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Dashboard uses ExportInfoDialog and ExportDialog. Decrypt button links to /decrypt.html"
+
+  - task: "decrypt.html page for password decryption"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/public/decrypt.html"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Static HTML page exists for client-side password decryption"
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 1
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "Export passwords API endpoint"
+    - "ExportInfoDialog component"
+    - "ExportDialog component"
+    - "Dashboard integration with export dialogs"
+    - "decrypt.html page for password decryption"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "main"
+    message: |
+      Implementation Complete Summary:
+      
+      Backend Changes:
+      1. Removed import route (POST /import) from importExportRoutes.js
+      2. Removed importPasswords and processImportRecords functions from importExportController.js
+      3. Export functionality remains intact with support for CSV, XML, XLSX, XLSM
+      
+      Frontend Changes:
+      1. Removed mobile menu CSS (mobile-menu-button, mobile-menu-overlay, mobile-menu)
+      2. Made dashboard-actions responsive with flex-wrap instead
+      3. Deleted old ImportExportDialog.js component
+      4. Verified ExportInfoDialog.js exists with proper export guidance
+      5. Verified ExportDialog.js exists for export-only functionality
+      6. Dashboard already integrates both dialogs properly
+      7. Decrypt button links to /decrypt.html
+      
+      Ready for Testing:
+      - Test export flow (clicking export button should show info dialog first)
+      - Test format selection and file download
+      - Test decrypt.html accessibility
+      - Test responsive design without mobile menu
+      - Verify import functionality is completely removed
