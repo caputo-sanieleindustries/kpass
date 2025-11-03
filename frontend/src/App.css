@@ -536,18 +536,10 @@ body {
     font-size: 1.125rem;
   }
 
-  /* Hide desktop actions, show mobile menu */
+  /* Make dashboard actions responsive */
   .dashboard-actions {
-    display: none !important;
-  }
-
-  .mobile-menu-button {
-    display: block;
-  }
-
-  .mobile-menu-overlay,
-  .mobile-menu {
-    display: block;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
 
   .dashboard-content {
