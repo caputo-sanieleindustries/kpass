@@ -9,7 +9,7 @@ let client;
 export const connectDB = async () => {
   try {
     const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost:27017';
-    const dbName = process.env.DB_NAME || 'test_database';
+    const dbName = process.env.DB_NAME || 'kpass-00';
 
     client = new MongoClient(mongoUrl);
     await client.connect();
