@@ -232,15 +232,18 @@ frontend:
 
   - task: "decrypt.html page for password decryption"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/public/decrypt.html"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Static HTML page exists for client-side password decryption"
+      - working: true
+        agent: "testing"
+        comment: "TESTED: Decrypt page fully functional. Accessible at /decrypt.html with correct title 'Decritta Password Esportate'. Contains all required form elements: master password input, username input, encrypted password textarea, and decrypt button. Also includes file upload functionality for CSV decryption. Page works offline as intended with proper styling and responsive design."
 
 metadata:
   created_by: "main_agent"
