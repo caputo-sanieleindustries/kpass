@@ -488,6 +488,8 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 3rem 2rem;
+  flex: 1;
+  overflow-y: auto;
 }
 
 .content-header {
@@ -495,6 +497,8 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .content-title {
@@ -515,6 +519,7 @@ body {
   border-radius: 12px;
   padding: 1.5rem;
   transition: box-shadow 0.2s, border-color 0.2s;
+  min-width: 0;
 }
 
 .password-card:hover {
@@ -527,6 +532,7 @@ body {
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 1rem;
+  gap: 1rem;
 }
 
 .password-card-title {
@@ -534,6 +540,8 @@ body {
   font-weight: 600;
   color: #0a0a0a;
   margin-bottom: 0.25rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .password-card-url {
@@ -545,11 +553,13 @@ body {
 .password-card-actions {
   display: flex;
   gap: 0.5rem;
+  flex-shrink: 0;
 }
 
 .btn-icon {
   width: 32px;
   height: 32px;
+  min-width: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -579,18 +589,23 @@ body {
   align-items: center;
   gap: 0.5rem;
   font-size: 0.875rem;
+  flex-wrap: wrap;
+  min-width: 0;
 }
 
 .password-info-label {
   color: #666;
   min-width: 80px;
   font-weight: 500;
+  flex-shrink: 0;
 }
 
 .password-info-value {
   color: #0a0a0a;
   flex: 1;
   word-break: break-word;
+  overflow-wrap: break-word;
+  min-width: 0;
 }
 
 .password-hidden {
