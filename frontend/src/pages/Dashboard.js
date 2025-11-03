@@ -4,9 +4,9 @@ import axios from 'axios';
 import AddPasswordDialog from '../components/AddPasswordDialog';
 import EditPasswordDialog from '../components/EditPasswordDialog';
 import DeleteConfirmDialog from '../components/DeleteConfirmDialog';
-import ImportExportDialog from '../components/ImportExportDialog';
+import ExportDialog from '../components/ExportDialog';
+import ExportInfoDialog from '../components/ExportInfoDialog';
 import { encryptPassword, decryptPassword } from '../utils/crypto';
-import { toast } from 'sonner';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -17,9 +17,9 @@ export default function Dashboard({ setIsAuthenticated }) {
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingPassword, setEditingPassword] = useState(null);
   const [deletingPassword, setDeletingPassword] = useState(null);
-  const [importExportDialog, setImportExportDialog] = useState(null);
+  const [showExportDialog, setShowExportDialog] = useState(false);
+  const [showExportInfoDialog, setShowExportInfoDialog] = useState(false);
   const [revealedPasswords, setRevealedPasswords] = useState({});
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const username = localStorage.getItem('username');
 
