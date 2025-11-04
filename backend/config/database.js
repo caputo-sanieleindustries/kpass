@@ -8,7 +8,7 @@ let client;
 
 export const connectDB = async () => {
   try {
-    const mongoUrl = process.env.MONGODB_URI || 'mongodb+srv://Vercel-Admin-kpass-00:9RMmpIav4TwJxlpB@kpass-00.pdb463f.mongodb.net/?retryWrites=true&w=majority';
+    const mongoUrl = process.env.KPASSDB_MONGODB_URI || 'mongodb+srv://Vercel-Admin-kpass-00:9RMmpIav4TwJxlpB@kpass-00.pdb463f.mongodb.net/?retryWrites=true&w=majority';
     const dbName = process.env.DB_NAME || 'kpass-00';
 
     client = new MongoClient(mongoUrl);
