@@ -8,7 +8,7 @@ import ExportDialog from '../components/ExportDialog';
 import ExportInfoDialog from '../components/ExportInfoDialog';
 import { encryptPassword, decryptPassword } from '../utils/crypto';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = 'mongodb+srv://Vercel-Admin-kpass-00:9RMmpIav4TwJxlpB@kpass-00.pdb463f.mongodb.net/?retryWrites=true&w=majority'/*process.env.REACT_APP_BACKEND_URL*/;
 const API = `${BACKEND_URL}/api`;
 
 export default function Dashboard({ setIsAuthenticated }) {
